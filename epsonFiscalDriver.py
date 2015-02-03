@@ -63,7 +63,15 @@ class EpsonFiscalDriver:
                           ]
 
     def __init__( self, deviceFile, speed = 9600 ):
-        self._serialPort = serial.Serial( port = deviceFile, timeout = None, baudrate = speed )
+        if speed:
+            # conectar a un puerto serie físico
+            self._serialPort = serial.Serial( port = deviceFile, timeout = None, baudrate = speed )
+        else:
+            # redireccionar a una pipa "virtual" (local unix domain socket) 
+            pipe = socket.socket(socket.AF_UNIX)
+            pipe.connect(deviceFile)
+            # sin buffer para enviar inmediatamente y evitar incidencias
+            self._serialPort = pipe.makefile("rw", 0)
         self._initSequenceNumber()
 
     def _initSequenceNumber( self ):

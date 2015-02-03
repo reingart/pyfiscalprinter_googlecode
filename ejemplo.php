@@ -35,7 +35,8 @@ try {
                                  // "615", "715v1", "715v2", "320"
     $puerto = "dummy";           // "COM1", "COM2", etc. o "/dev/ttyS0" en linux
     $equipo = "";                // IP si no esta conectada a esta máquina
-    $ok = $ctrl->Conectar($marca, $modelo, $puerto, $equipo);
+    $velocidad = 0;         // baudios (BPS, para puerto serie)
+    $ok = $ctrl->Conectar($marca, $modelo, $puerto, $equipo, $velocidad);
     
     # Analizar errores (si no se habilito lanzar excepciones)
     if (!$ok) {

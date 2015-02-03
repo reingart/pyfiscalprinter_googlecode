@@ -119,8 +119,8 @@ class PyFiscalPrinter(Object):
         self.log = StringIO()
 
     @inicializar_y_capturar_excepciones
-    @method(DBUS_IFACE, in_signature='ssss', out_signature='b')
-    def Conectar(self, marca="epson", modelo="320", puerto="COM1", equipo=None):
+    @method(DBUS_IFACE, in_signature='ssssi', out_signature='b')
+    def Conectar(self, marca="epson", modelo="320", puerto="COM1", equipo=None, velocidad=9600):
         "Iniciar la comunicación con la instancia del controlador fiscal"
         if marca == 'epson':
             Printer = EpsonPrinter
@@ -130,7 +130,7 @@ class PyFiscalPrinter(Object):
         # instanciar la impresora fiscal
         if not equipo:
             # conexión por puerto serie
-            printer = Printer(deviceFile=puerto, model=modelo, dummy=dummy)
+            printer = Printer(deviceFile=puerto, model=modelo, dummy=dummy, speed=velocidad)
         else:
             # conexion por proxy TCP/IP
             printer = Printer(model=modelo, host=equipo, port=int(puerto), dummy=dummy)
