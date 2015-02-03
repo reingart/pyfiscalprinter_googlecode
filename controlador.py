@@ -86,6 +86,8 @@ def inicializar_y_capturar_excepciones(func):
             self.Excepcion = traceback.format_exception_only( sys.exc_type, sys.exc_value)[0]
             if self.LanzarExcepciones:
                 raise
+            else:
+                return 0
         finally:
             pass
     return capturar_errores_wrapper
@@ -240,6 +242,21 @@ class PyFiscalPrinter(Object):
         cbte_fiscal = self.cbte_fiscal_map[int(tipo_cbte)]
         letra_cbte = cbte_fiscal[-1] if len(cbte_fiscal) > 1 else None
         return self.printer.getLastNumber(letra_cbte)
+
+    @method(DBUS_IFACE, in_signature='s', out_signature='s')
+    def GetProperty(self, prop_name):
+        v = getattr(self, prop_name)
+        if isinstance(v, str):
+            try:
+                return v.decode("utf8").encode("utf8")
+            except:
+                return v.decode("latin1").encode("utf8")
+        else:
+            return str(v)
+
+    @method(DBUS_IFACE, in_signature='sv')
+    def SetProperty(self, prop_name, value):
+        setattr(self, prop_name, value)
 
 
 if __name__ == '__main__':

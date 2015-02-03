@@ -39,8 +39,10 @@ try {
     
     # Analizar errores (si no se habilito lanzar excepciones)
     if (!$ok) {
-        echo "Excepcion: {$ctrl->Excepcion}\n";
-        echo "Traza: {$ctrl->Traceback}\n";
+        $ex = $ctrl->GetProperty("Excepcion");
+        $tr = $ctrl->GetProperty("Traceback");
+        echo "Excepcion: $ex\n";
+        echo "Traza: $tr\n";
         exit(1);
     }
 
